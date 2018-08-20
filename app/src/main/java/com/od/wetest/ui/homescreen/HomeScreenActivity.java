@@ -14,6 +14,9 @@ import com.od.wetest.R;
 import com.od.wetest.adapter.RecyclerViewAdapter;
 import com.od.wetest.model.DataModel;
 
+/**
+ * The type Home screen activity.
+ */
 public class HomeScreenActivity extends AppCompatActivity implements HomeScreenView {
 
     private static final String TAG = HomeScreenActivity.class.getSimpleName();
@@ -29,6 +32,8 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         setSupportActionBar(toolbar);
+
+        //Initializing presenter class
         homeScreenPresenter = new HomeScreenPresenter(getApplicationContext(), this);
         homeScreenPresenter.fetchDataFromJson();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -36,6 +41,7 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
+        //Enabling Pull to refresh feature
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -50,6 +56,7 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
 
     }
 
+    //Received data from HomeScreenPresenter
     @Override
     public void getDataModel(DataModel dataModel) {
         if (dataModel != null) {

@@ -20,11 +20,20 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * The type Home screen presenter.
+ */
 class HomeScreenPresenter {
     private Context context;
     private HomeScreenView homeScreenView;
     private static final String TAG = HomeScreenPresenter.class.getSimpleName();
 
+    /**
+     * Instantiates a new Home screen presenter.
+     *
+     * @param context        the context
+     * @param homeScreenView the home screen view
+     */
     HomeScreenPresenter(Context context, HomeScreenView homeScreenView) {
         this.context = context;
         this.homeScreenView = homeScreenView;
@@ -41,6 +50,9 @@ class HomeScreenPresenter {
         }
     };
 
+    /**
+     * Fetch data from json.
+     */
     void fetchDataFromJson(){
         RequestQueue queue = VolleyRequestQueue.getInstance(context).getRequestQueue();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Utils.URL, null, new Response.Listener<JSONObject>() {
@@ -49,6 +61,7 @@ class HomeScreenPresenter {
                 GsonBuilder builder = new GsonBuilder();
                 Gson mGson = builder.create();
                 DataModel dataModel = mGson.fromJson(response.toString(), DataModel.class);
+                //Sending data to UI.
                 homeScreenView.getDataModel(dataModel);
             }
         }, errorListener) {

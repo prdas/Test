@@ -18,6 +18,9 @@ import com.od.wetest.model.DataModel;
 
 import java.util.ArrayList;
 
+/**
+ * The type Recycler view adapter.
+ */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CustomRecyclerView> {
 
     private ArrayList<DataModel.Rows> itemList;
@@ -25,6 +28,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ImageLoader mImageLoader;
 
 
+    /**
+     * Instantiates a new Recycler view adapter.
+     *
+     * @param context  the context
+     * @param itemList the item list
+     */
     public RecyclerViewAdapter(Context context, ArrayList<DataModel.Rows> itemList) {
         this.itemList = itemList;
         RequestQueue mRequestQueue = VolleyRequestQueue.getInstance(context).getRequestQueue();
@@ -66,11 +75,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return this.itemList.size();
     }
 
+    /**
+     * The type Custom recycler view.
+     */
     class CustomRecyclerView extends RecyclerView.ViewHolder {
+        /**
+         * The Txt title.
+         */
         TextView txtTitle;
+        /**
+         * The Txt description.
+         */
         TextView txtDescription;
+        /**
+         * The Network image view.
+         */
         NetworkImageView networkImageView;
 
+        /**
+         * Instantiates a new Custom recycler view.
+         *
+         * @param itemView the item view
+         */
         CustomRecyclerView(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);

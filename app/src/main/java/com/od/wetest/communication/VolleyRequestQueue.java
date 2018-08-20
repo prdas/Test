@@ -5,6 +5,9 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * The type Volley request queue.
+ */
 public class VolleyRequestQueue {
     private static VolleyRequestQueue volleyRequestQueue;
     private Context mContext;
@@ -15,6 +18,12 @@ public class VolleyRequestQueue {
         mRequestQueue = getRequestQueue();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @param context the context
+     * @return the instance
+     */
     public static synchronized VolleyRequestQueue getInstance(Context context) {
         if (volleyRequestQueue == null) {
             volleyRequestQueue = new VolleyRequestQueue(context);
@@ -22,6 +31,11 @@ public class VolleyRequestQueue {
         return volleyRequestQueue;
     }
 
+    /**
+     * Gets request queue.
+     *
+     * @return the request queue
+     */
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(mContext);
