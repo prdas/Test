@@ -6,7 +6,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 /**
- * The type Volley request queue.
+ * This class is used to create Volley Request queue.
  */
 public class VolleyRequestQueue {
     private static VolleyRequestQueue volleyRequestQueue;

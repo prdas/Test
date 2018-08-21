@@ -51,7 +51,7 @@ class HomeScreenPresenter {
     };
 
     /**
-     * Fetch data from json.
+     * Fetch json data from the URL by using Volley library.
      */
     void fetchDataFromJson(){
         RequestQueue queue = VolleyRequestQueue.getInstance(context).getRequestQueue();

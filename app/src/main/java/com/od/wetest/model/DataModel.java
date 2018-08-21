@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * The type Data model.
+ * The Data model for JSON response
  */
 public class DataModel implements Serializable{
 
