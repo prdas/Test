@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.od.wetest.R;
 import com.od.wetest.adapter.RecyclerViewAdapter;
@@ -32,10 +33,9 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         setSupportActionBar(toolbar);
-
         //Initializing presenter class
-        homeScreenPresenter = new HomeScreenPresenter(getApplicationContext(), this);
-        homeScreenPresenter.fetchDataFromJson();
+        homeScreenPresenter = new HomeScreenPresenter(this, new HomeScreenServiceImpl());
+        homeScreenPresenter.fetchJsonDataFromUrl();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -46,7 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                homeScreenPresenter.fetchDataFromJson();
+                homeScreenPresenter.fetchJsonDataFromUrl();
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -68,5 +68,22 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
                 swipeContainer.setRefreshing(false);
             }
         }
+    }
+
+    @Override
+    public void setUnauthorizedMessage() {
+        Toast.makeText(getApplicationContext(), "Not Authorized", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void noDataStatus(DataModel model) {
+        if(model == null) {
+            Toast.makeText(getApplicationContext(), "Data Not available", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void setErrorMessage() {
+        Toast.makeText(getApplicationContext(), "Timeout error", Toast.LENGTH_LONG).show();
     }
 }

@@ -1,20 +1,17 @@
 package com.od.wetest.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.od.wetest.R;
-import com.od.wetest.communication.VolleyRequestQueue;
 import com.od.wetest.model.DataModel;
+import com.od.wetest.util.PicassoTrustAll;
+import com.od.wetest.view.ScaleImageView;
 
 import java.util.ArrayList;
 
@@ -26,6 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<DataModel.Rows> itemList;
 
     private ImageLoader mImageLoader;
+    private Context context;
 
 
     /**
@@ -36,18 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     public RecyclerViewAdapter(Context context, ArrayList<DataModel.Rows> itemList) {
         this.itemList = itemList;
-        RequestQueue mRequestQueue = VolleyRequestQueue.getInstance(context).getRequestQueue();
-        mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<>(10);
-
-            public void putBitmap(String url, Bitmap bitmap) {
-                mCache.put(url, bitmap);
-            }
-
-            public Bitmap getBitmap(String url) {
-                return mCache.get(url);
-            }
-        });
+        this.context = context;
     }
 
     @Override
@@ -64,9 +51,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.txtTitle.setText(myData.getTitle());
         if(myData.getDescription() != null)
         holder.txtDescription.setText(myData.getDescription());
-        if(myData.getImageHref() != null)
-        holder.networkImageView.setImageUrl(myData.getImageHref(), mImageLoader);
-
+        if(myData.getImageHref() != null) {
+            PicassoTrustAll.getInstance(context)
+                    .load(myData.getImageHref())
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(holder.networkImageView);
+        }
 
     }
 
@@ -90,7 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         /**
          * The Network image view.
          */
-        NetworkImageView networkImageView;
+        ScaleImageView networkImageView;
 
         /**
          * Instantiates a new Custom recycler view.
@@ -101,7 +91,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
             txtDescription = (TextView) itemView.findViewById(R.id.txtDescription);
-            networkImageView = (NetworkImageView) itemView.findViewById(R.id.imgNetwork);
+            networkImageView = (ScaleImageView) itemView.findViewById(R.id.imgNetwork);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.od.wetest.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.od.wetest.communication.responses.Response;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 /**
  * The Data model for JSON response
  */
-public class DataModel implements Serializable{
+public class DataModel extends Response implements Serializable{
 
     @SerializedName("title")
     private String actionBarTitle;
