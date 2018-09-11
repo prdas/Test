@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.od.wetest.R;
 import com.od.wetest.adapter.RecyclerViewAdapter;
 import com.od.wetest.model.DataModel;
+import com.od.wetest.util.Utils;
 
 /**
  * The type Home screen activity.
@@ -35,7 +36,11 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
         setSupportActionBar(toolbar);
         //Initializing presenter class
         homeScreenPresenter = new HomeScreenPresenter(this, new HomeScreenServiceImpl());
-        homeScreenPresenter.fetchJsonDataFromUrl();
+        if (Utils.isNetworkAvailable(getApplicationContext())) {
+            homeScreenPresenter.fetchJsonDataFromUrl();
+        } else {
+            Toast.makeText(getApplicationContext(), "You are not connected to internet.", Toast.LENGTH_LONG).show();
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -46,7 +51,14 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                homeScreenPresenter.fetchJsonDataFromUrl();
+                if (Utils.isNetworkAvailable(getApplicationContext())) {
+                    homeScreenPresenter.fetchJsonDataFromUrl();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You are not connected to internet.", Toast.LENGTH_LONG).show();
+                    if (swipeContainer != null) {
+                        swipeContainer.setRefreshing(false);
+                    }
+                }
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -64,7 +76,7 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
             toolbar.setTitle(dataModel.getActionBarTitle());
             RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataModel.getRows());
             recyclerView.setAdapter(adapter);
-            if(swipeContainer != null){
+            if (swipeContainer != null) {
                 swipeContainer.setRefreshing(false);
             }
         }
@@ -77,7 +89,7 @@ public class HomeScreenActivity extends AppCompatActivity implements HomeScreenV
 
     @Override
     public void noDataStatus(DataModel model) {
-        if(model == null) {
+        if (model == null) {
             Toast.makeText(getApplicationContext(), "Data Not available", Toast.LENGTH_LONG).show();
         }
     }
